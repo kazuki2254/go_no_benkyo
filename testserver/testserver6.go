@@ -19,10 +19,13 @@ type keisan struct {
 }
 
 func sansu(k keisan) (keisan, bool) {
+	
+	//Stringでもらった値をfloatに変換する
 	v1, er1 := strconv.ParseFloat(k.V1, 64)
 	v2, er2 := strconv.ParseFloat(k.V2, 64)
 	k.Fo = k.V1 + k.Op + k.V2
 	b :=false
+	//値が変換エラーを起こしていないか？演算子が正しいか確認し、結果を構造体に代入
 	switch {
 	case er1 != nil || er2 != nil:
 		k.Re = "bad value"
@@ -42,12 +45,13 @@ func sansu(k keisan) (keisan, bool) {
 }
 
 func gethandle(e echo.Context) error {
+	//入力値を取得
 	kekka := keisan{
 		V1: e.Param("v1"),
 		V2: e.Param("v2"),
 		Op: e.Param("op"),
 	}
-	
+	//
 	kekka, b := sansu(kekka)
 	m := make(map[string]string)
 	m[kekka.Fo] = kekka.Re
